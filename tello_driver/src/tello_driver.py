@@ -335,10 +335,21 @@ class TelloDriver(object):
 
 
     def _cmd_joy_callback(self, msg):
-        pitch = -msg.axes[0] * 100
-        roll = -msg.axes[1] * 100
-        throttle = msg.axes[4] * 100
-        yaw = msg.axes[3] * 100
+        # x for landing
+        if (msg.buttons[0] == 1):
+            self.process_command("takeoff", False)
+            return
+            
+        # press both trigger buttons to take off
+        if (msg.buttons[5] == 1) and (msg.buttons[4] == 1):
+            self.process_command("takeoff", False)
+            return
+
+
+        pitch = -msg.axes[3] * 100
+        roll = -msg.axes[2] * 100
+        throttle = msg.axes[2] * 100
+        yaw = msg.axes[1] * 100
         self.process_command("rc", False, pitch, roll, throttle, yaw)
 
 
