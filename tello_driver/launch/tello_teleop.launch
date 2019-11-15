@@ -1,0 +1,9 @@
+<launch>
+    <node name="joy_node" pkg="joy" type="joy_node">
+        <param name="dev" value="/dev/input/js0" />
+    </node>
+
+    <node name="tello_driver" pkg="tello_driver" type="tello_driver.py" output="screen"/>
+    <param name="command_description" value="$(find tello_driver)/cfg/commands.yaml"/>
+    <param name="camera_info" value="$(find tello_driver)/cfg/camera_info.txt"/>
+</launch>

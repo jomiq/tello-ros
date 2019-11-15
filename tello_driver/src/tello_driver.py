@@ -331,13 +331,11 @@ class TelloDriver(object):
 
 
 
-
-
-
+    # Sony DS4 with some weird mapping
     def _cmd_joy_callback(self, msg):
         # x for landing
         if (msg.buttons[0] == 1):
-            self.process_command("takeoff", False)
+            self.process_command("land", False)
             return
             
         # press both trigger buttons to take off
@@ -345,13 +343,13 @@ class TelloDriver(object):
             self.process_command("takeoff", False)
             return
 
+        # finally do stick commands. discard if landing/takeoff command recieved
 
-        pitch = -msg.axes[3] * 100
-        roll = -msg.axes[2] * 100
-        throttle = msg.axes[2] * 100
-        yaw = msg.axes[1] * 100
+        pitch = -msg.axes[2] * 100
+        roll = msg.axes[3] * 100
+        throttle = msg.axes[1] * 100
+        yaw = -msg.axes[0] * 100
         self.process_command("rc", False, pitch, roll, throttle, yaw)
-
 
 if __name__ == '__main__':
     driver = TelloDriver()
